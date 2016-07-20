@@ -176,4 +176,6 @@ func main() {
 	// Collect output
 	var input string
 	fmt.Scanln(&input)
+
+	return
 }
