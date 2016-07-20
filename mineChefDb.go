@@ -144,7 +144,7 @@ func mine(start, end int, titleRgx, addressRgx, regionRgx, telRgx, rUrlRgx, clos
 	return
 }
 
-func iso8859_1_to_Utf8(iso8859_1_buffer []byte) string {
+func iso8859_1_to_Utf8(iso8859_1_buffer []byte) []byte {
 
 	// slice of runes, to copy from byte array
 	buffer := make([]rune, len(iso8859_1_buffer))
@@ -154,7 +154,7 @@ func iso8859_1_to_Utf8(iso8859_1_buffer []byte) string {
 		buffer[i] = rune(b)
 	}
 
-	return string(buffer)
+	return []byte(string(buffer))
 }
 
 func main() {
