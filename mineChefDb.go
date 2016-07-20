@@ -17,7 +17,6 @@ func mine(start, end int, titleRgx, addressRgx, regionRgx, telRgx, rUrlRgx, clos
 		var url bytes.Buffer = *bytes.NewBufferString("http://www.chefdb.com/pl/")
 		url.WriteString(strconv.Itoa(idx))
 
-		//fmt.Println(string(url.Bytes()))
 		resp, err := http.Get(url.String())
 
 		if err != nil {
@@ -26,8 +25,11 @@ func mine(start, end int, titleRgx, addressRgx, regionRgx, telRgx, rUrlRgx, clos
 		}
 
 		// Read body and close connection
-		body, err := ioutil.ReadAll(resp.Body)
+		iso_8859_body, err := ioutil.ReadAll(resp.Body)
 		resp.Body.Close()
+
+		// Convert iso8859-1 body to UTF-8
+		body := iso8859_1_to_Utf8(iso_8859_body)
 
 		var name, city, address, region, tel, rUrl []byte
 		var closed bool
@@ -73,10 +75,23 @@ func mine(start, end int, titleRgx, addressRgx, regionRgx, telRgx, rUrlRgx, clos
 				string(region), string(tel), string(rUrl), status)
 		}
 
-		
+
 
 	}
 	return
+}
+
+func iso8859_1_to_Utf8(iso8859_1_buffer []byte) string {
+
+	// slice of runes, to copy from byte array
+	buffer := make([]rune, len(iso8859_1_buffer))
+
+	// Iterate over byte array, converting to UTF-8
+	for i, b := range iso8859_1_buffer {
+		buffer[i] = rune(b)
+	}
+
+	return string(buffer)
 }
 
 func main() {
